@@ -10,6 +10,7 @@ const errorMiddleware = (err, req, res, next) => {
     res
       .status(err.status)
       .json({
+        success: false,
         errors: err.message,
       })
       .end();
@@ -17,6 +18,7 @@ const errorMiddleware = (err, req, res, next) => {
     res
       .status(500)
       .json({
+        success: false,
         errors: err.message,
       })
       .end();

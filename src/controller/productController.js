@@ -4,6 +4,8 @@ const input = async (req, res, next) => {
   try {
     const product = await productService.create(req.body);
     res.status(201).json({
+      success: true,
+      message: "Product successfully created",
       data: product,
     });
   } catch (e) {
@@ -15,6 +17,8 @@ const get = async (req, res, next) => {
   try {
     const product = await productService.get(req.params.id);
     res.status(200).json({
+      success: true,
+      message: "Product successfully retrieved",
       data: product,
     });
   } catch (e) {
@@ -26,6 +30,8 @@ const update = async (req, res, next) => {
   try {
     const product = await productService.update(req.params.id, req.body);
     res.status(200).json({
+      success: true,
+      message: "Product successfully updated",
       data: product,
     });
   } catch (e) {
@@ -39,7 +45,8 @@ const remove = async (req, res, next) => {
     res
       .status(200)
       .json({
-        data: "product removed",
+        success: true,
+        message: "Product successfully deleted",
       })
       .end();
   } catch (e) {

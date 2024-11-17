@@ -7,7 +7,7 @@ const create = async (req) => {
   const product = validate(inputProductValidation, req);
 
   if (!product) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   return await prismaClient.product.create({
@@ -28,7 +28,7 @@ const get = async (id) => {
   const productId = validate(getProductValidation, id);
 
   if (!productId) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   const product = await prismaClient.product.findUnique({
@@ -38,7 +38,7 @@ const get = async (id) => {
   });
 
   if (!product) {
-    throw new ResponseError(404, "product not found");
+    throw new ResponseError(404, "Product not found");
   }
 
   return product;
@@ -48,7 +48,7 @@ const update = async (id, req) => {
   const product = validate(inputProductValidation, req);
 
   if (!product) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   const checkProduct = await prismaClient.product.findUnique({
@@ -58,7 +58,7 @@ const update = async (id, req) => {
   });
 
   if (!checkProduct) {
-    throw new ResponseError(404, "product not found");
+    throw new ResponseError(404, "Product not found");
   }
 
   return await prismaClient.product.update({
@@ -82,7 +82,7 @@ const remove = async (id) => {
   const productId = validate(getProductValidation, id);
 
   if (!productId) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   const product = await prismaClient.product.findUnique({
@@ -92,7 +92,7 @@ const remove = async (id) => {
   });
 
   if (!product) {
-    throw new ResponseError(404, "product not found");
+    throw new ResponseError(404, "Product not found");
   }
 
   return await prismaClient.product.delete({
@@ -107,7 +107,7 @@ const search = async (req, body) => {
   body = validate(searchDescriptionValidation, body);
 
   if (!req) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   const skip = (req.page - 1) * req.size;
@@ -189,6 +189,8 @@ const search = async (req, body) => {
   });
 
   return {
+    success: true,
+    message: "Product successfully retrieved",
     data: product,
     meta: {
       totalItems: totalItems,

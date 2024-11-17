@@ -13,7 +13,7 @@ const register = async (req) => {
   const user = validate(inputUserValidation, req);
 
   if (!user) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   let userRecord = null;
@@ -30,7 +30,7 @@ const register = async (req) => {
   });
 
   if (checkUser === 1) {
-    throw new ResponseError(400, "user already exists");
+    throw new ResponseError(400, "User already exists");
   }
 
   await prismaClient.user.create({
@@ -47,7 +47,7 @@ const login = async (req) => {
   const user = validate(inputUserValidation, req);
 
   if (!user) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   try {
@@ -55,7 +55,7 @@ const login = async (req) => {
 
     return userRecord;
   } catch (e) {
-    throw new ResponseError(400, "invalid email or password");
+    throw new ResponseError(400, "Invalid email or password");
   }
 };
 
@@ -77,7 +77,7 @@ const get = async (req) => {
   });
 
   if (!user) {
-    throw new ResponseError(404, "user not found");
+    throw new ResponseError(404, "User not found");
   }
 
   return user;
@@ -88,18 +88,18 @@ const updateUser = async (userData, request) => {
   const user = validate(updateUserValidation, request);
 
   if (!decodedToken) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   if (!decodedToken.firebase.sign_in_provider === "password") {
-    throw new ResponseError(400, "user not registered with email and password");
+    throw new ResponseError(400, "User not registered with email and password");
   }
 
   try {
     const userRecord = await admin.auth().getUser(decodedToken.uid);
     const uid = userRecord.uid;
     if (decodedToken.uid !== uid) {
-      throw new ResponseError(404, "user not found");
+      throw new ResponseError(404, "User not found");
     }
 
     const checkUser = await prismaClient.user.count({
@@ -109,7 +109,7 @@ const updateUser = async (userData, request) => {
     });
 
     if (checkUser === 0) {
-      throw new ResponseError(404, "user not found");
+      throw new ResponseError(404, "User not found");
     }
   } catch (e) {
     throw new ResponseError(400, e.message);
@@ -154,14 +154,14 @@ const updateUserData = async (userData, request, file) => {
   const user = validate(updateUserDataValidation, { ...request, profile_picture: file });
 
   if (!decodedToken) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   try {
     const userRecord = await admin.auth().getUser(decodedToken.uid);
     const uid = userRecord.uid;
     if (decodedToken.uid !== uid) {
-      throw new ResponseError(404, "user not found");
+      throw new ResponseError(404, "User not found");
     }
 
     const checkUser = await prismaClient.user.count({
@@ -238,7 +238,6 @@ const updateUserData = async (userData, request, file) => {
 
         stream.on("finish", async () => {
           const [makeFilePublic] = await cloudFile.makePublic();
-          console.log(`File uploaded to ${destination} and is now public.`);
           data.profile_picture = `https://storage.googleapis.com/${makeFilePublic.bucket}/${makeFilePublic.object}`;
           resolve();
         });
@@ -272,7 +271,7 @@ const logout = async (req) => {
   const decodedToken = validate(getUserValidation, req);
 
   if (!decodedToken) {
-    throw new ResponseError(400, "invalid input");
+    throw new ResponseError(400, "Invalid input");
   }
 
   try {

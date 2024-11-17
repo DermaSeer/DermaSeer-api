@@ -4,7 +4,7 @@ const register = async (req, res, next) => {
   try {
     const user = await userService.register(req.body);
     res.status(201).json({
-      status: "success",
+      success: true,
       message: "Register successful",
       data: {
         email: user.user.email,
@@ -19,7 +19,7 @@ const login = async (req, res, next) => {
   try {
     const user = await userService.login(req.body);
     res.status(200).json({
-      status: "success",
+      success: true,
       message: "Login successful",
       data: {
         email: user.user.email,
@@ -37,7 +37,7 @@ const get = async (req, res, next) => {
     const userData = req.user;
     const user = await userService.get(userData);
     res.status(200).json({
-      status: "success",
+      success: true,
       message: "Get user successful",
       data: {
         user,
@@ -54,7 +54,7 @@ const updateUser = async (req, res, next) => {
     const request = req.body;
     const user = await userService.updateUser(userData, request);
     res.status(200).json({
-      status: "success",
+      success: true,
       message: "Update user successful",
       data: {
         user,
@@ -73,7 +73,7 @@ const updateUserData = async (req, res, next) => {
 
     const user = await userService.updateUserData(userData, request, file);
     res.status(200).json({
-      status: "success",
+      success: true,
       message: "Update user data successful",
       data: {
         user,
@@ -89,7 +89,7 @@ const logout = async (req, res, next) => {
     const userData = req.user;
     const user = await userService.logout(userData);
     res.status(200).json({
-      status: "success",
+      success: true,
       message: "Logout successful",
       data: {
         email: user.email,
