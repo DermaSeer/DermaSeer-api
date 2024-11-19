@@ -13,8 +13,7 @@ const updateUserValidation = Joi.object({
 });
 
 const updateUserDataValidation = Joi.object({
-  first_name: Joi.string().required(),
-  last_name: Joi.string().optional(),
+  name: Joi.string().required(),
   birthday: Joi.date().optional(),
   gender: Joi.string().optional(),
   profile_picture: Joi.object({

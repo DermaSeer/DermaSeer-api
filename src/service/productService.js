@@ -118,7 +118,11 @@ const search = async (req, body) => {
     const descriptions = Array.isArray(body.description) ? body.description : [body.description];
     const descriptionFilters = descriptions.map((description) => ({
       description: {
-        contains: description,
+        search: description
+          .split(" ")
+          .map((term) => term.trim())
+          .filter((term) => term.length > 0)
+          .join(" & "),
       },
     }));
     filter.push({
@@ -130,6 +134,7 @@ const search = async (req, body) => {
     filter.push({
       name: {
         contains: req.name,
+        mode: "insensitive",
       },
     });
   }
@@ -138,6 +143,7 @@ const search = async (req, body) => {
     filter.push({
       category: {
         contains: req.category,
+        mode: "insensitive",
       },
     });
   }
@@ -146,6 +152,7 @@ const search = async (req, body) => {
     filter.push({
       shop_name: {
         contains: req.shop_name,
+        mode: "insensitive",
       },
     });
   }
@@ -162,6 +169,7 @@ const search = async (req, body) => {
     filter.push({
       description: {
         contains: req.description,
+        mode: "insensitive",
       },
     });
   }

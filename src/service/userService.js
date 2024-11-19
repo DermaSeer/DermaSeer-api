@@ -135,8 +135,7 @@ const updateUser = async (userData, request) => {
       data: data,
       select: {
         email: true,
-        first_name: true,
-        last_name: true,
+        name: true,
         birthday: true,
         gender: true,
         profile_picture: true,
@@ -184,12 +183,8 @@ const updateUserData = async (userData, request, file) => {
 
   const data = {};
 
-  if (user.first_name) {
-    data.first_name = user.first_name;
-  }
-
-  if (user.last_name) {
-    data.last_name = user.last_name;
+  if (user.name) {
+    data.first_name = user.name;
   }
 
   if (user.birthday) {
@@ -256,8 +251,7 @@ const updateUserData = async (userData, request, file) => {
     data: data,
     select: {
       email: true,
-      first_name: true,
-      last_name: true,
+      name: true,
       birthday: true,
       gender: true,
       profile_picture: true,

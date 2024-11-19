@@ -6,6 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -16,26 +17,25 @@ datasource db {
 model Product {
   id          String   @id @default(cuid())
   name        String   @db.VarChar(255)
-  category    String  @db.VarChar(255)
-  shop_name   String  @db.VarChar(255)
-  image_url   String  @db.VarChar(255)
-  url         String @db.VarChar(255)
+  category    String   @db.VarChar(255)
+  shop_name   String   @db.VarChar(255)
+  image_url   String   @db.VarChar(255)
+  url         String   @db.VarChar(255)
   product_rating Float 
   price       Float
-  description String @db.Text
+  description String   @db.Text
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
+  
   @@map("products")
 }
 
 model User {
   uid             String    @id
-  first_name      String?    @db.VarChar(100)
-  last_name       String?   @db.VarChar(100)
+  name            String?   @db.VarChar(100)
   email           String    @unique
   birthday        DateTime? @db.Date
-  gender          String?   @db.VarChar(10)
+  gender          String?   @db.VarChar(100)
   profile_picture String?   @db.VarChar(255)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -47,8 +47,8 @@ model Article {
   id          String   @id @default(cuid())
   title       String   @db.VarChar(255)
   content     String?  @db.Text
-  image_url   String  @db.VarChar(255)
-  url         String @db.VarChar(255)
+  image_url   String   @db.VarChar(255)
+  url         String   @db.VarChar(255)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
