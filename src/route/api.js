@@ -17,6 +17,7 @@ userRoute.get("/api/users/current", userController.get);
 userRoute.patch("/api/users/current", userController.updateUser);
 userRoute.post("/api/users/current/data", uploadImage, userController.updateUserData);
 userRoute.post("/api/users/logout", userController.logout);
+userRoute.delete("/api/users/current", userController.deleteUser);
 
 userRoute.post("/api/product", productController.input);
 userRoute.get("/api/product/:id", productController.get);

@@ -279,4 +279,58 @@ const logout = async (req) => {
   }
 };
 
-export default { register, login, get, updateUser, updateUserData, logout };
+const deleteUser = async (req) => {
+  const decodedToken = validate(getUserValidation, req);
+
+  if (!decodedToken) {
+    throw new ResponseError(400, "Invalid input");
+  }
+
+  try {
+    const userRecord = await admin.auth().getUser(decodedToken.uid);
+    const uid = userRecord.uid;
+    if (decodedToken.uid !== uid) {
+      throw new ResponseError(404, "User not found");
+    }
+
+    const checkUser = await prismaClient.user.count({
+      where: {
+        uid: decodedToken.uid,
+      },
+    });
+
+    if (checkUser === 0) {
+      throw new ResponseError(404, "User not found");
+    }
+
+    const checkProfilePicture = await prismaClient.user.findUnique({
+      where: {
+        uid: decodedToken.uid,
+      },
+      select: {
+        profile_picture: true,
+      },
+    });
+
+    if (checkProfilePicture.profile_picture !== null) {
+      const objectNameToDelete = checkProfilePicture.profile_picture.split("/").slice(4).join("/");
+      const checkFile = cloudStorage.file(objectNameToDelete);
+      const [exists] = await checkFile.exists();
+      if (exists) {
+        await checkFile.delete();
+      }
+    }
+
+    await prismaClient.user.delete({
+      where: {
+        uid: decodedToken.uid,
+      },
+    });
+
+    await admin.auth().deleteUser(decodedToken.uid);
+  } catch (e) {
+    throw new ResponseError(400, e.message);
+  }
+};
+
+export default { register, login, get, updateUser, updateUserData, logout, deleteUser };

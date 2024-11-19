@@ -101,4 +101,17 @@ const logout = async (req, res, next) => {
   }
 };
 
-export default { register, login, get, updateUser, updateUserData, logout };
+const deleteUser = async (req, res, next) => {
+  try {
+    const userData = req.user;
+    await userService.deleteUser(userData);
+    res.status(200).json({
+      success: true,
+      message: "Delete user successful",
+    });
+  } catch (e) {
+    next(e);
+  }
+};
+
+export default { register, login, get, updateUser, updateUserData, logout, deleteUser };
