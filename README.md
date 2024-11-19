@@ -37,7 +37,7 @@ npm install
 2. Run database migrations
 
 ```bash
-npx prisma migrate dev
+npx prisma migrate
 ```
 
 3. Start the application

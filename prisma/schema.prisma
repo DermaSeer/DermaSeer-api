@@ -31,7 +31,7 @@ model Product {
 }
 
 model User {
-  uid             String    @id @unique
+  uid             String    @id
   name            String?   @db.VarChar(100)
   email           String    @unique
   birthday        DateTime? @db.Date
@@ -40,12 +40,12 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   images    Image[]
-  
+
   @@map("users")
 }
 
 model Article {
-  id          String   @id @unique @default(cuid()) 
+  id          String   @id@default(cuid()) 
   title       String   @db.VarChar(255)
   content     String?  @db.Text
   image_url   String   @db.VarChar(255)
@@ -57,8 +57,8 @@ model Article {
 }
 
 model Image {
-  id          String   @id @unique @default(cuid())
-  image_url         String   @db.VarChar(255)
+  id          String   @id @default(cuid())
+  image_url   String   @db.VarChar(255)
   uid         String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
