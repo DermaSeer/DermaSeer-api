@@ -68,8 +68,7 @@ const get = async (req) => {
     },
     select: {
       email: true,
-      first_name: true,
-      last_name: true,
+      name: true,
       birthday: true,
       gender: true,
       profile_picture: true,
@@ -184,7 +183,7 @@ const updateUserData = async (userData, request, file) => {
   const data = {};
 
   if (user.name) {
-    data.first_name = user.name;
+    data.name = user.name;
   }
 
   if (user.birthday) {
