@@ -9,11 +9,11 @@ const serviceAccountPath = path.resolve(__dirname, "../application/serviceAccoun
 
 // Inisialisasi Google Cloud Storage
 const storage = new Storage({
-  projectId: "dermaseer",
+  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
   keyFilename: `${serviceAccountPath}`,
 });
 
-const bucketName = "tesdemas";
+const bucketName = process.env.GOOGLE_CLOUD_BUCKET_NAME;
 const cloudStorage = storage.bucket(bucketName);
 
 export { cloudStorage };
