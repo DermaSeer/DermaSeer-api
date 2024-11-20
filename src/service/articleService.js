@@ -2,6 +2,7 @@ import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/responseError.js";
 import { validate } from "../validation/validation.js";
 import { inputArticleValidation, getArticleValidation, updateArticleValidation, removeArticleValidation, searchArticleValidation } from "../validation/articleValidation.js";
+import { Model } from "firebase-admin/machine-learning";
 
 const create = async (req) => {
   const article = validate(inputArticleValidation, req);
@@ -25,12 +26,22 @@ const get = async (id) => {
   const articleId = validate(getArticleValidation, id);
 
   if (!articleId) {
+    throw new ResponseError(404, "Invalid input");
+  }
+
+  const checkArticle = await prismaClient.article.findUnique({
+    where: {
+      id: articleId,
+    },
+  });
+
+  if (!checkArticle) {
     throw new ResponseError(404, "Article not found");
   }
 
   return await prismaClient.article.findUnique({
     where: {
-      id: id,
+      id: articleId,
     },
   });
 };
@@ -50,21 +61,16 @@ const search = async (req) => {
     filter.push({
       title: {
         contains: article.title,
-      },
-    });
-  }
-  if (article.content) {
-    filter.push({
-      content: {
-        contains: article.content,
+        mode: "insensitive",
       },
     });
   }
 
-  if (article.publish_date) {
+  if (article.content) {
     filter.push({
-      publish_date: {
-        equals: article.publish_date,
+      content: {
+        contains: article.content,
+        mode: "insensitive",
       },
     });
   }
@@ -99,17 +105,23 @@ const update = async (id, req) => {
   const articleId = validate(getArticleValidation, id);
   const article = validate(updateArticleValidation, req);
 
-  if (!articleId) {
-    throw new ResponseError(404, "Article not found");
+  if (!article || !articleId) {
+    throw new ResponseError(400, "Invalid input");
   }
 
-  if (!article) {
-    throw new ResponseError(400, "Invalid input");
+  const checkArticle = await prismaClient.article.findUnique({
+    where: {
+      id: articleId,
+    },
+  });
+
+  if (!checkArticle) {
+    throw new ResponseError(404, "Article not found");
   }
 
   return await prismaClient.article.update({
     where: {
-      id: id,
+      id: articleId,
     },
     data: {
       title: article.title,
@@ -126,6 +138,16 @@ const remove = async (id) => {
 
   if (!articleId) {
     throw new ResponseError(400, "Invalid input");
+  }
+
+  const checkArticle = await prismaClient.article.findUnique({
+    where: {
+      id: id,
+    },
+  });
+
+  if (!checkArticle) {
+    throw new ResponseError(404, "Article not found");
   }
 
   return await prismaClient.article.delete({
