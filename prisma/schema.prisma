@@ -50,6 +50,7 @@ model Article {
   content     String?  @db.Text
   image_url   String   @db.VarChar(255)
   url         String   @db.VarChar(255)
+  publish_date DateTime @db.Date
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

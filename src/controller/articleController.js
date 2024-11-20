@@ -15,7 +15,7 @@ const input = async (req, res, next) => {
 
 const get = async (req, res, next) => {
   try {
-    const article = await articleService.getById(req.params.id);
+    const article = await articleService.get(req.params.id);
     res.status(200).json({
       success: true,
       message: "Article successfully retrieved",

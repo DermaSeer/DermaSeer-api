@@ -16,6 +16,7 @@ const create = async (req) => {
       content: article.content,
       image_url: article.image_url,
       url: article.url,
+      publish_date: new Date(article.publish_date),
     },
   });
 };
@@ -56,6 +57,14 @@ const search = async (req) => {
     filter.push({
       content: {
         contains: article.content,
+      },
+    });
+  }
+
+  if (article.publish_date) {
+    filter.push({
+      publish_date: {
+        equals: article.publish_date,
       },
     });
   }
@@ -107,6 +116,7 @@ const update = async (id, req) => {
       content: article.content,
       image_url: article.image_url,
       url: article.url,
+      publish_date: article.publish_date,
     },
   });
 };
