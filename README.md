@@ -10,14 +10,14 @@
 - Make Bucket
 - Use Fine-grained access
 - Setup Service Account with Storage Object Admin permission
-- Save Service Account to `./src/application/ServiceAccountCloudStorage.json`
+- Save Service Account to `./src/application/credentials/cloudStorage.json`
 
 ## Firebase Setup
 
 ### Firebase Admin
 
 - Setup Service Account in Firebase Project Settings
-- Save Service Account to `./src/application/ServiceAccountKey.json`
+- Save Service Account to `./src/application/credentials/firebaseAdmin.json`
 
 ### Firebase App Web
 
