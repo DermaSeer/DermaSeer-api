@@ -207,7 +207,6 @@ const updateUserData = async (userData, request, file) => {
 
       if (checkProfilePicture.profile_picture !== null) {
         const objectNameToDelete = checkProfilePicture.profile_picture.split("/").slice(4).join("/");
-        console.log(`File ${objectNameToDelete} deleted.`);
         const checkFile = cloudStorage.file(objectNameToDelete);
         const [exists] = await checkFile.exists();
         if (exists) {
@@ -334,8 +333,6 @@ const deleteUser = async (req) => {
         id: true,
       },
     });
-
-    console.log(checkPredict);
 
     if (checkPredict.length > 0) {
       for (const prediction of checkPredict) {
