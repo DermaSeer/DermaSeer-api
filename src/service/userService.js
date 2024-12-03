@@ -69,7 +69,7 @@ const get = async (req) => {
     select: {
       email: true,
       name: true,
-      birthday: true,
+      age: true,
       gender: true,
       profile_picture: true,
     },
@@ -135,7 +135,7 @@ const updateUser = async (userData, request) => {
       select: {
         email: true,
         name: true,
-        birthday: true,
+        age: true,
         gender: true,
         profile_picture: true,
       },
@@ -186,8 +186,8 @@ const updateUserData = async (userData, request, file) => {
     data.name = user.name;
   }
 
-  if (user.birthday) {
-    data.birthday = user.birthday;
+  if (user.age) {
+    data.age = user.age;
   }
 
   if (user.gender) {
@@ -231,7 +231,12 @@ const updateUserData = async (userData, request, file) => {
         });
 
         stream.on("finish", async () => {
-          const [makeFilePublic] = await cloudFile.makePublic();
+          let makeFilePublic;
+          try {
+            [makeFilePublic] = await cloudFile.makePublic();
+          } catch (e) {
+            reject(new ResponseError(500, e.message));
+          }
           data.profile_picture = `https://storage.googleapis.com/${makeFilePublic.bucket}/${makeFilePublic.object}`;
           resolve();
         });
@@ -251,7 +256,7 @@ const updateUserData = async (userData, request, file) => {
     select: {
       email: true,
       name: true,
-      birthday: true,
+      age: true,
       gender: true,
       profile_picture: true,
     },

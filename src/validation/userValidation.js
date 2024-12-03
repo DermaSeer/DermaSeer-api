@@ -14,7 +14,7 @@ const updateUserValidation = Joi.object({
 
 const updateUserDataValidation = Joi.object({
   name: Joi.string().required(),
-  birthday: Joi.date().optional(),
+  age: Joi.number().optional(),
   gender: Joi.string().optional(),
   profile_picture: Joi.object({
     fieldname: Joi.string().required(),
