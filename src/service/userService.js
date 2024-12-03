@@ -326,6 +326,33 @@ const deleteUser = async (req) => {
       }
     }
 
+    const checkPredict = await prismaClient.modelPredict.findMany({
+      where: {
+        user_id: decodedToken.uid,
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    console.log(checkPredict);
+
+    if (checkPredict.length > 0) {
+      for (const prediction of checkPredict) {
+        await prismaClient.modelResult.deleteMany({
+          where: {
+            predict_id: prediction.id,
+          },
+        });
+
+        await prismaClient.modelPredict.delete({
+          where: {
+            id: prediction.id,
+          },
+        });
+      }
+    }
+
     await prismaClient.user.delete({
       where: {
         uid: decodedToken.uid,
