@@ -2,7 +2,6 @@ import { prismaClient } from "../application/database.js";
 import { ResponseError } from "../error/responseError.js";
 import { validate } from "../validation/validation.js";
 import { inputArticleValidation, getArticleValidation, updateArticleValidation, removeArticleValidation, searchArticleValidation } from "../validation/articleValidation.js";
-import { Model } from "firebase-admin/machine-learning";
 
 const create = async (req) => {
   const article = validate(inputArticleValidation, req);
