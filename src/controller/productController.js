@@ -56,7 +56,7 @@ const remove = async (req, res, next) => {
 
 const search = async (req, res, next) => {
   try {
-    const product = await productService.search(req.query, req.body);
+    const product = await productService.search(req.query);
     res.status(200).json(product);
   } catch (e) {
     next(e);

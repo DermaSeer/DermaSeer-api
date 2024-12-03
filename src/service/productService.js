@@ -33,7 +33,7 @@ const get = async (id) => {
 
   const product = await prismaClient.product.findUnique({
     where: {
-      id: id,
+      id: productId,
     },
   });
 
@@ -53,7 +53,7 @@ const update = async (id, req) => {
 
   const checkProduct = await prismaClient.product.findUnique({
     where: {
-      id: id,
+      id: product,
     },
   });
 
@@ -63,7 +63,7 @@ const update = async (id, req) => {
 
   return await prismaClient.product.update({
     where: {
-      id: id,
+      id: product,
     },
     data: {
       name: product.name,
@@ -87,7 +87,7 @@ const remove = async (id) => {
 
   const product = await prismaClient.product.findUnique({
     where: {
-      id: id,
+      id: productId,
     },
   });
 
@@ -102,9 +102,8 @@ const remove = async (id) => {
   });
 };
 
-const search = async (req, body) => {
+const search = async (req) => {
   req = validate(searchProductValidation, req);
-  body = validate(searchDescriptionValidation, body);
 
   if (!req) {
     throw new ResponseError(400, "Invalid input");
@@ -113,22 +112,6 @@ const search = async (req, body) => {
   const skip = (req.page - 1) * req.size;
 
   const filter = [];
-
-  if (body.description) {
-    const descriptions = Array.isArray(body.description) ? body.description : [body.description];
-    const descriptionFilters = descriptions.map((description) => ({
-      description: {
-        search: description
-          .split(" ")
-          .map((term) => term.trim())
-          .filter((term) => term.length > 0)
-          .join(" & "),
-      },
-    }));
-    filter.push({
-      OR: descriptionFilters,
-    });
-  }
 
   if (req.name) {
     filter.push({
@@ -201,9 +184,9 @@ const search = async (req, body) => {
     message: "Product successfully retrieved",
     data: product,
     meta: {
-      totalItems: totalItems,
       page: req.page,
-      size: req.size,
+      total_items: totalItems,
+      total_page: Math.ceil(totalItems / req.size),
     },
   };
 };
