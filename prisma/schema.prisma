@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearchPostgres"]
 }
 
 datasource db {
@@ -15,17 +15,17 @@ datasource db {
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  name        String   @db.VarChar(255)
-  category    String   @db.VarChar(255)
-  shop_name   String   @db.VarChar(255)
-  image_url   String   @db.VarChar(255)
-  url         String   @db.VarChar(255)
-  product_rating Float 
-  price       Float
-  description String   @db.Text
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  name            String   @db.VarChar(255)
+  category        String   @db.VarChar(255)
+  shop_name       String   @db.VarChar(255)
+  image_url       String   @db.VarChar(255)
+  url             String   @db.VarChar(255)
+  product_rating  Float 
+  price           Float
+  description     String   @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
   
   @@map("products")
 }
@@ -34,38 +34,55 @@ model User {
   uid             String    @id
   name            String?   @db.VarChar(100)
   email           String    @unique
-  birthday        DateTime? @db.Date
+  age             Int?
   gender          String?   @db.VarChar(100)
   profile_picture String?   @db.VarChar(255)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  images    Image[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  model_predict          ModelPredict[]
 
   @@map("users")
 }
 
 model Article {
-  id          String   @id@default(cuid()) 
-  title       String   @db.VarChar(255)
-  content     String?  @db.Text
-  image_url   String   @db.VarChar(255)
-  url         String   @db.VarChar(255)
-  publish_date DateTime? @db.Date
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(cuid()) 
+  title         String   @db.VarChar(255)
+  content       String?  @db.Text
+  image_url     String   @db.VarChar(255)
+  url           String   @db.VarChar(255)
+  publish_date  DateTime? @db.Date
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@map("articles")
 }
 
-model Image {
+model ModelPredict {
   id          String   @id @default(cuid())
+  user_id         String
   image_url   String   @db.VarChar(255)
-  uid         String
+  acne_type   String   @db.VarChar(255)
+  result      ModelResult?
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now())
 
-  user        User     @relation(fields: [uid], references: [uid])
+  user        User     @relation(fields: [user_id], references: [uid])
+  @@index([user_id])
+  @@map("model_predicts")
+}
 
-  @@index([uid])
-  @@map("images")
+model ModelResult {
+  id                  String   @id @default(cuid())
+  predict_id          String   @unique
+  skin_type           String   @db.VarChar(255)
+  product_category    String   @db.VarChar(255)
+  ingredient          String[]
+  msg_recommendation  String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  model_predicts      ModelPredict @relation(fields: [predict_id], references: [id])
+
+  @@index([predict_id])
+  @@map("model_results")
 }

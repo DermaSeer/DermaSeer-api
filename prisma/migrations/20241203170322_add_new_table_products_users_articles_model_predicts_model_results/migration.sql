@@ -20,7 +20,7 @@ CREATE TABLE "users" (
     "uid" TEXT NOT NULL,
     "name" VARCHAR(100),
     "email" TEXT NOT NULL,
-    "birthday" DATE,
+    "age" INTEGER,
     "gender" VARCHAR(100),
     "profile_picture" VARCHAR(255),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -36,6 +36,7 @@ CREATE TABLE "articles" (
     "content" TEXT,
     "image_url" VARCHAR(255) NOT NULL,
     "url" VARCHAR(255) NOT NULL,
+    "publish_date" DATE,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -43,21 +44,45 @@ CREATE TABLE "articles" (
 );
 
 -- CreateTable
-CREATE TABLE "images" (
+CREATE TABLE "model_predicts" (
     "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL,
     "image_url" VARCHAR(255) NOT NULL,
-    "uid" TEXT NOT NULL,
+    "acne_type" VARCHAR(255) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "model_predicts_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "model_results" (
+    "id" TEXT NOT NULL,
+    "predict_id" TEXT NOT NULL,
+    "skin_type" VARCHAR(255) NOT NULL,
+    "product_category" VARCHAR(255) NOT NULL,
+    "ingredient" TEXT[],
+    "msg_recommendation" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "images_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "model_results_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE INDEX "images_uid_idx" ON "images"("uid");
+CREATE INDEX "model_predicts_user_id_idx" ON "model_predicts"("user_id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "model_results_predict_id_key" ON "model_results"("predict_id");
+
+-- CreateIndex
+CREATE INDEX "model_results_predict_id_idx" ON "model_results"("predict_id");
 
 -- AddForeignKey
-ALTER TABLE "images" ADD CONSTRAINT "images_uid_fkey" FOREIGN KEY ("uid") REFERENCES "users"("uid") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "model_predicts" ADD CONSTRAINT "model_predicts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("uid") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "model_results" ADD CONSTRAINT "model_results_predict_id_fkey" FOREIGN KEY ("predict_id") REFERENCES "model_predicts"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
