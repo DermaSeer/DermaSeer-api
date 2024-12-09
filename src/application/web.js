@@ -5,6 +5,8 @@ import { userRoute } from "../route/api.js";
 
 export const web = express();
 
+web.set("trust proxy", true);
+
 web.use(express.json());
 
 web.use(publicRouter);
