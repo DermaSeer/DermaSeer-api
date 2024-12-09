@@ -37,7 +37,7 @@ userRoute.post("/api/model/predict", uploadImagePredict, modelController.predict
 userRoute.post("/api/model/recomendation", modelController.vertexAIRecommendation);
 userRoute.get("/api/model/product", modelController.getProductRecommendation);
 userRoute.get("/api/model/predictions", modelController.getPredictions);
-userRoute.get("/api/model/predict/:id", modelController.getPredictionsById);
+userRoute.get("/api/model/predict/:id", modelController.getPredictionById);
 userRoute.delete("/api/model/predict/:id", modelController.deletePrediction);
 
 export { userRoute };

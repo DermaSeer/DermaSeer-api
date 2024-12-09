@@ -422,7 +422,7 @@ const getPredictions = async (userData) => {
   };
 };
 
-const getPredictionsById = async (id) => {
+const getPredictionById = async (id) => {
   const predict = validate(getPredictionByIdValidation, id);
 
   if (!predict) {
@@ -495,4 +495,4 @@ const deletePrediction = async (id) => {
   });
 };
 
-export default { predictModel, vertexAIRecommendation, getProductRecommendation, getPredictions, getPredictionsById, deletePrediction };
+export default { predictModel, vertexAIRecommendation, getProductRecommendation, getPredictions, getPredictionById, deletePrediction };

@@ -42,9 +42,9 @@ const getPredictions = async (req, res, next) => {
   }
 };
 
-const getPredictionsById = async (req, res, next) => {
+const getPredictionById = async (req, res, next) => {
   try {
-    const predict = await modelService.getPredictionsById(req.params.id);
+    const predict = await modelService.getPredictionById(req.params.id);
     res.status(200).json({
       status: true,
       message: "Prediction successfully retrieved",
@@ -67,4 +67,4 @@ const deletePrediction = async (req, res, next) => {
     next(e);
   }
 };
-export default { predictModel, vertexAIRecommendation, getProductRecommendation, getPredictions, getPredictionsById, deletePrediction };
+export default { predictModel, vertexAIRecommendation, getProductRecommendation, getPredictions, getPredictionById, deletePrediction };
