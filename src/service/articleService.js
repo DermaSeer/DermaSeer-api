@@ -93,9 +93,9 @@ const search = async (req) => {
     message: "Article successfully retrieved",
     data: articles,
     meta: {
-      totalItems: totalItems,
       page: article.page,
-      size: article.size,
+      totalItems: totalItems,
+      total_page: Math.ceil(totalItems / article.size),
     },
   };
 };
