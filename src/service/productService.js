@@ -171,6 +171,9 @@ const search = async (req) => {
     },
     skip: skip,
     take: req.size,
+    orderBy: {
+      product_rating: "desc",
+    },
   });
 
   const totalItems = await prismaClient.product.count({

@@ -335,6 +335,9 @@ const getProductRecommendation = async (req) => {
     where: {
       AND: filter,
     },
+    orderBy: {
+      product_rating: "desc",
+    },
   });
 
   const ingredientMatches = {};
@@ -415,6 +418,9 @@ const getPredictions = async (userData) => {
       image_url: true,
       createdAt: true,
       result: true,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 

@@ -80,6 +80,9 @@ const search = async (req) => {
     },
     skip: skip,
     take: article.size,
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   const totalItems = await prismaClient.article.count({
